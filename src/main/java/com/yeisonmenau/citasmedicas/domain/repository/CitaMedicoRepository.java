@@ -9,5 +9,5 @@ public interface CitaMedicoRepository {
     CitaMedica guardarCitaMedica (CitaMedica citaMedica);
     List<CitaMedica> buscarCitasMedicas();
     Optional<CitaMedica> buscarCitaMedicaPorId(Long citaMedicaId);
-    void eliminarCitaMedica();
+    void eliminarCitaMedica(Long citaMedicaId);
 }
