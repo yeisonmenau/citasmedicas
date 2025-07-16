@@ -1,6 +1,5 @@
 package com.yeisonmenau.citasmedicas.infrastructure.persistence.repository;
 
-import com.yeisonmenau.citasmedicas.domain.model.Paciente;
 import com.yeisonmenau.citasmedicas.infrastructure.persistence.entity.PacienteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

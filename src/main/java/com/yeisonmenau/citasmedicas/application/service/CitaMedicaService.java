@@ -32,11 +32,11 @@ public class CitaMedicaService implements GuardarCitaMedicaUseCase, BuscarCitasM
 
     @Override
     public void eliminarCitaMedica(Long citaMedicaId) {
-
+        citaMedicoRepository.eliminarCitaMedica(citaMedicaId);
     }
 
     @Override
     public CitaMedica guardarCitaMedica(CitaMedica citaMedica) {
-        return null;
+        return citaMedicoRepository.guardarCitaMedica(citaMedica);
     }
 }

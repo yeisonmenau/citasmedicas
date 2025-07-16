@@ -1,20 +1,14 @@
-package com.yeisonmenau.citasmedicas.infrastructure.persistence.entity;
+package com.yeisonmenau.citasmedicas.infrastructure.dto.request;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-@Entity
-@Table(name = "medico")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicoEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long medicoId;
+public class MedicoRequestDTO {
     private String medicoNombre;
     private String medicoEspecialidad;
     private LocalDate medicoFechaNacimiento;
