@@ -1,4 +1,4 @@
-package com.yeisonmenau.citasmedicas.infrastructure.persistence;
+package com.yeisonmenau.citasmedicas.infrastructure.persistence.entity;
 
 import com.yeisonmenau.citasmedicas.domain.model.Medico;
 import com.yeisonmenau.citasmedicas.domain.model.Paciente;

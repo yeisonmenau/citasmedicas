@@ -1,4 +1,4 @@
-package com.yeisonmenau.citasmedicas.infrastructure.persistence;
+package com.yeisonmenau.citasmedicas.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
