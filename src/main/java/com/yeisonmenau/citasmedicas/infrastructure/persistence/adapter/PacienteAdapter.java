@@ -6,11 +6,14 @@ import com.yeisonmenau.citasmedicas.infrastructure.mapper.PacienteMapper;
 import com.yeisonmenau.citasmedicas.infrastructure.persistence.entity.PacienteEntity;
 import com.yeisonmenau.citasmedicas.infrastructure.persistence.repository.JpaPacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class PacienteAdapter implements PacienteRepository {
+
     private final JpaPacienteRepository jpaPacienteRepository;
     private final PacienteMapper mapper;
 
