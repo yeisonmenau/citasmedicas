@@ -5,10 +5,11 @@ import com.yeisonmenau.citasmedicas.infrastructure.dto.request.CitaMedicaRequest
 import com.yeisonmenau.citasmedicas.infrastructure.dto.response.CitaMedicaResponseDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.persistence.entity.CitaMedicaEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "sprig")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CitaMedicaMapper {
     // Controller → Dominio
     CitaMedica dtoADominio(CitaMedicaRequestDTO dto);

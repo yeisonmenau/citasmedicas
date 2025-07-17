@@ -5,10 +5,11 @@ import com.yeisonmenau.citasmedicas.infrastructure.dto.request.MedicoRequestDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.dto.response.MedicoResponseDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.persistence.entity.MedicoEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MedicoMapper {
     // Controller → Dominio
     Medico dtoADominio(MedicoRequestDTO dto);

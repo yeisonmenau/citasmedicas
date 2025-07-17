@@ -15,7 +15,10 @@ import java.time.LocalDate;
 public class PacienteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "paciente_id")
     private Long pacienteId;
+    @Column(name = "paciente_nombre")
     private String pacienteNombre;
+    @Column(name = "paciente_fecha_nacimiento")
     private LocalDate pacienteFechaNacimiento;
 }
