@@ -8,6 +8,7 @@ import com.yeisonmenau.citasmedicas.domain.model.Paciente;
 import com.yeisonmenau.citasmedicas.infrastructure.dto.request.PacienteRequestDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.dto.response.PacienteResponseDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.mapper.PacienteMapper;
+import com.yeisonmenau.citasmedicas.infrastructure.persistence.entity.PacienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,57 +43,62 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<PacienteResponseDTO> crearPaciente(@RequestBody PacienteRequestDTO pacienteRequestDTO) {
-        Paciente pacienteDominio = mapper.dtoADominio(pacienteRequestDTO);
-        Paciente pacienteGuardado = guardarPacienteUseCase.guardarPaciente(pacienteDominio);
-        PacienteResponseDTO pacienteRespuesta = mapper.dominioADTO(pacienteGuardado);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteRespuesta);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(this.guardarPacienteUseCase.guardarPaciente(pacienteRequestDTO));
     }
 
     @GetMapping
     public ResponseEntity<List<PacienteResponseDTO>> obtenerPacientes() {
-        List<Paciente> pacientes = buscarPacientesUseCase.buscarPacientes();
-        List<PacienteResponseDTO> pacientesRespuesta = mapper.dominioADTOs(pacientes);
-        return ResponseEntity.ok(pacientesRespuesta);
+        List<PacienteResponseDTO> pacientes = buscarPacientesUseCase.buscarPacientes();
+        return ResponseEntity.ok(pacientes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteResponseDTO> obtenerPacientePorId(@PathVariable("id") Long pacienteId) {
-        Optional<Paciente> pacienteEncontrado = buscarPacientePorIdUseCase.buscarPacientePorId(pacienteId);
-        return pacienteEncontrado
-                .map(paciente -> ResponseEntity.ok(mapper.dominioADTO(paciente)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> obtenerPacientePorId(@PathVariable("id") Long pacienteId) {
+        Optional<PacienteResponseDTO> respuesta = buscarPacientePorIdUseCase.buscarPacientePorId(pacienteId);
+        if (respuesta.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Paciente con ID " + pacienteId + " no encontrado.");
+        }
+        return ResponseEntity.ok(respuesta);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteResponseDTO> actualizarPaciente(@PathVariable("id") Long pacienteId,
-                                                                  @RequestBody PacienteRequestDTO pacienteRequestDTO) {
-        Optional<Paciente> pacienteExistente = buscarPacientePorIdUseCase.buscarPacientePorId(pacienteId);
+    public ResponseEntity<?> actualizarPaciente(
+                                                @PathVariable("id") Long pacienteId,
+                                                @RequestBody PacienteRequestDTO pacienteRequestDTO) {
+        Optional<PacienteResponseDTO> pacienteExistente = buscarPacientePorIdUseCase.buscarPacientePorId(pacienteId);
 
         if (pacienteExistente.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Paciente con ID " + pacienteId + " no encontrado.");
         }
 
         // Crear nuevo paciente con el ID existente
-        Paciente pacienteActualizado = new Paciente(
+        PacienteEntity pacienteActualizado = new PacienteEntity(
                 pacienteId,
                 pacienteRequestDTO.getPacienteNombre(),
                 pacienteRequestDTO.getPacienteFechaNacimiento()
         );
 
-        Paciente pacienteGuardado = guardarPacienteUseCase.guardarPaciente(pacienteActualizado);
-        PacienteResponseDTO pacienteRespuesta = mapper.dominioADTO(pacienteGuardado);
-        return ResponseEntity.ok(pacienteRespuesta);
+        PacienteResponseDTO pacienteGuardado = guardarPacienteUseCase.guardarPaciente(pacienteActualizado);
+        return ResponseEntity.ok(pacienteGuardado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPaciente(@PathVariable("id") Long pacienteId) {
-        Optional<Paciente> pacienteExistente = buscarPacientePorIdUseCase.buscarPacientePorId(pacienteId);
-
+    public ResponseEntity<String> eliminarPaciente(@PathVariable("id") Long pacienteId) {
+        Optional<PacienteResponseDTO> pacienteExistente = buscarPacientePorIdUseCase.buscarPacientePorId(pacienteId);
         if (pacienteExistente.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Paciente con ID " + pacienteId + " no encontrado.");
         }
-
         eliminarPacienteUseCase.eliminarPaciente(pacienteId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Paciente con ID " + pacienteId + " eliminado exitosamente.");
     }
 }

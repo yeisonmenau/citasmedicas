@@ -50,29 +50,29 @@ public class CitaMedicaController {
         this.buscarPacientePorIdUseCase = buscarPacientePorIdUseCase;
     }
 
-    @PostMapping
-    public ResponseEntity<CitaMedicaResponseDTO> crearCitaMedica(@RequestBody CitaMedicaRequestDTO citaMedicaRequestDTO) {
-        // Verificar que el médico existe
-        Optional<Medico> medico = buscarMedicoPorIdUseCase.buscarMedicoPorId(citaMedicaRequestDTO.getMedicoId());
-        if (medico.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        // Verificar que el paciente existe
-        Optional<Paciente> paciente = buscarPacientePorIdUseCase.buscarPacientePorId(citaMedicaRequestDTO.getPacienteId());
-        if (paciente.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        Medico medicoDominio = medico.get();
-        Paciente pacienteDominio = paciente.get();
-
-        // Crear la cita médica
-        CitaMedica citaMedica = new CitaMedica(null,medicoDominio,pacienteDominio, citaMedicaRequestDTO.getMotivo(),citaMedicaRequestDTO.getCitaMedicaFecha(),citaMedicaRequestDTO.getCitaMedicaHora());
-
-        CitaMedica citaMedicaGuardada = guardarCitaMedicaUseCase.guardarCitaMedica(citaMedica);
-        CitaMedicaResponseDTO citaMedicaRespuesta = mapper.dominioADTO(citaMedicaGuardada);
-        return ResponseEntity.status(HttpStatus.CREATED).body(citaMedicaRespuesta);
-    }
+//    @PostMapping
+//    public ResponseEntity<CitaMedicaResponseDTO> crearCitaMedica(@RequestBody CitaMedicaRequestDTO citaMedicaRequestDTO) {
+//        // Verificar que el médico existe
+//        Optional<Medico> medico = buscarMedicoPorIdUseCase.buscarMedicoPorId(citaMedicaRequestDTO.getMedicoId());
+//        if (medico.isEmpty()) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        // Verificar que el paciente existe
+//        Optional<Paciente> paciente = buscarPacientePorIdUseCase.buscarPacientePorId(citaMedicaRequestDTO.getPacienteId());
+//        if (paciente.isEmpty()) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        Medico medicoDominio = medico.get();
+//        Paciente pacienteDominio = paciente.get();
+//
+//        // Crear la cita médica
+//        CitaMedica citaMedica = new CitaMedica(null,medicoDominio,pacienteDominio, citaMedicaRequestDTO.getMotivo(),citaMedicaRequestDTO.getCitaMedicaFecha(),citaMedicaRequestDTO.getCitaMedicaHora());
+//
+//        CitaMedica citaMedicaGuardada = guardarCitaMedicaUseCase.guardarCitaMedica(citaMedica);
+//        CitaMedicaResponseDTO citaMedicaRespuesta = mapper.dominioADTO(citaMedicaGuardada);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(citaMedicaRespuesta);
+//    }
 
     @GetMapping
     public ResponseEntity<List<CitaMedicaResponseDTO>> obtenerCitasMedicas() {
@@ -89,41 +89,41 @@ public class CitaMedicaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CitaMedicaResponseDTO> actualizarCitaMedica(@PathVariable("id") Long citaMedicaId,
-                                                                      @RequestBody CitaMedicaRequestDTO citaMedicaRequestDTO) {
-        Optional<CitaMedica> citaMedicaExistente = buscarCitaMedicaPorIdUseCase.buscarCitaMedicaPorId(citaMedicaId);
-
-        if (citaMedicaExistente.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // Verificar que el médico existe
-        Optional<Medico> medico = buscarMedicoPorIdUseCase.buscarMedicoPorId(citaMedicaRequestDTO.getMedicoId());
-        if (medico.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        // Verificar que el paciente existe
-        Optional<Paciente> paciente = buscarPacientePorIdUseCase.buscarPacientePorId(citaMedicaRequestDTO.getPacienteId());
-        if (paciente.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        // Actualizar la cita médica
-        CitaMedica citaMedicaActualizada = new CitaMedica(
-                citaMedicaId,
-                medico.get(),
-                paciente.get(),
-                citaMedicaRequestDTO.getMotivo(),
-                citaMedicaRequestDTO.getCitaMedicaFecha(),
-                citaMedicaRequestDTO.getCitaMedicaHora()
-        );
-
-        CitaMedica citaMedicaGuardada = guardarCitaMedicaUseCase.guardarCitaMedica(citaMedicaActualizada);
-        CitaMedicaResponseDTO citaMedicaRespuesta = mapper.dominioADTO(citaMedicaGuardada);
-        return ResponseEntity.ok(citaMedicaRespuesta);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<CitaMedicaResponseDTO> actualizarCitaMedica(@PathVariable("id") Long citaMedicaId,
+//                                                                      @RequestBody CitaMedicaRequestDTO citaMedicaRequestDTO) {
+//        Optional<CitaMedica> citaMedicaExistente = buscarCitaMedicaPorIdUseCase.buscarCitaMedicaPorId(citaMedicaId);
+//
+//        if (citaMedicaExistente.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        // Verificar que el médico existe
+//        Optional<Medico> medico = buscarMedicoPorIdUseCase.buscarMedicoPorId(citaMedicaRequestDTO.getMedicoId());
+//        if (medico.isEmpty()) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        // Verificar que el paciente existe
+//        Optional<Paciente> paciente = buscarPacientePorIdUseCase.buscarPacientePorId(citaMedicaRequestDTO.getPacienteId());
+//        if (paciente.isEmpty()) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        // Actualizar la cita médica
+//        CitaMedica citaMedicaActualizada = new CitaMedica(
+//                citaMedicaId,
+//                medico.get(),
+//                paciente.get(),
+//                citaMedicaRequestDTO.getMotivo(),
+//                citaMedicaRequestDTO.getCitaMedicaFecha(),
+//                citaMedicaRequestDTO.getCitaMedicaHora()
+//        );
+//
+//        CitaMedica citaMedicaGuardada = guardarCitaMedicaUseCase.guardarCitaMedica(citaMedicaActualizada);
+//        CitaMedicaResponseDTO citaMedicaRespuesta = mapper.dominioADTO(citaMedicaGuardada);
+//        return ResponseEntity.ok(citaMedicaRespuesta);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCitaMedica(@PathVariable("id") Long citaMedicaId) {

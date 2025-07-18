@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 @Data
-@NoArgsConstructor(force = true)
+@NoArgsConstructor
 @AllArgsConstructor
 public class CitaMedica {
-    private final Long citaMedicaId;
-    private final Medico medico;
-    private final Paciente paciente;
-    private final String motivo;
-    private final LocalDate citaMedicaFecha;
-    private final LocalTime citaMedicaHora;
+    private Long citaMedicaId;
+    private Medico medico;
+    private Paciente paciente;
+    private String motivo;
+    private LocalDate citaMedicaFecha;
+    private LocalTime citaMedicaHora;
 }

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
+@NoArgsConstructor
 public class Paciente {
-    private final Long pacienteId;
-    private final String pacienteNombre;
-    private final LocalDate pacienteFechaNacimiento;
+    private Long pacienteId;
+    private String pacienteNombre;
+    private LocalDate pacienteFechaNacimiento;
 }

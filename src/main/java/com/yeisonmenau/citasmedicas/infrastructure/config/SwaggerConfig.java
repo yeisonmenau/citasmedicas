@@ -22,18 +22,6 @@ public class SwaggerConfig {
                         .version("v1.0.0")
                         .contact(new Contact()
                                 .name("Yeison Menau")
-                                .email("yeisonmenau@example.com")
-                                .url("https://github.com/yeisonmenau"))
-                        .license(new License()
-                                .name("MIT License")
-                                .url("https://opensource.org/licenses/MIT")))
-                .servers(List.of(
-                        new Server()
-                                .url("http://localhost:8080")
-                                .description("Servidor de desarrollo"),
-                        new Server()
-                                .url("https://api.citasmedicas.com")
-                                .description("Servidor de producción")
-                ));
+                                .url("https://github.com/yeisonmenau")));
     }
 }

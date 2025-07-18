@@ -6,13 +6,16 @@ import com.yeisonmenau.citasmedicas.application.usecase.EliminarPacienteUseCase;
 import com.yeisonmenau.citasmedicas.application.usecase.GuardarPacienteUseCase;
 import com.yeisonmenau.citasmedicas.domain.model.Paciente;
 import com.yeisonmenau.citasmedicas.domain.repository.PacienteRepository;
+import com.yeisonmenau.citasmedicas.infrastructure.dto.request.PacienteRequestDTO;
+import com.yeisonmenau.citasmedicas.infrastructure.dto.response.PacienteResponseDTO;
+import com.yeisonmenau.citasmedicas.infrastructure.persistence.entity.PacienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+
 public class PacienteService implements GuardarPacienteUseCase, BuscarPacientesUseCase, BuscarPacientePorIdUseCase, EliminarPacienteUseCase {
 
     private final PacienteRepository pacienteRepository;
@@ -23,12 +26,7 @@ public class PacienteService implements GuardarPacienteUseCase, BuscarPacientesU
     }
 
     @Override
-    public Optional<Paciente> buscarPacientePorId(Long pacienteId) {
-        return pacienteRepository.buscarPacientePorId(pacienteId);
-    }
-
-    @Override
-    public List<Paciente> buscarPacientes() {
+    public List<PacienteResponseDTO> buscarPacientes() {
         return pacienteRepository.buscarPacientes();
     }
 
@@ -37,8 +35,19 @@ public class PacienteService implements GuardarPacienteUseCase, BuscarPacientesU
         pacienteRepository.eliminarPaciente(pacienteId);
     }
 
+
     @Override
-    public Paciente guardarPaciente(Paciente paciente) {
+    public PacienteResponseDTO guardarPaciente(PacienteRequestDTO paciente) {
         return pacienteRepository.guardarPaciente(paciente);
+    }
+
+    @Override
+    public PacienteResponseDTO guardarPaciente(PacienteEntity paciente) {
+        return pacienteRepository.guardarPaciente(paciente);
+    }
+
+    @Override
+    public Optional<PacienteResponseDTO> buscarPacientePorId(Long pacienteId) {
+        return pacienteRepository.buscarPacientePorId(pacienteId);
     }
 }

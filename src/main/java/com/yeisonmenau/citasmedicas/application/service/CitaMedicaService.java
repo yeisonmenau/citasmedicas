@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+
 public class CitaMedicaService implements GuardarCitaMedicaUseCase, BuscarCitasMedicasUseCase, BuscarCitaMedicaPorIdUseCase, EliminarCitaMedicaUseCase {
     private final CitaMedicoRepository citaMedicoRepository;
     @Autowired
