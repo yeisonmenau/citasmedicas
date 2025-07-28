@@ -1,0 +1,29 @@
+# Archivos de configuración de IDE
+.idea/
+.vscode/
+*.iml
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Carpeta de builds previos
+build
+
+# Cache de Gradle
+.gradle
+
+# Archivos de entorno
+*.env
+
+# Archivos de logs
+*.log
+
+# Archivos temporales
+tmp/
+*.tmp
+
+# Archivos de Git
+.git
+.gitignore
+.gitattributes
