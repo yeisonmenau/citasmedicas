@@ -13,4 +13,5 @@ public class Medico {
     private String medicoNombre;
     private String medicoEspecialidad;
     private LocalDate medicoFechaNacimiento;
+
 }

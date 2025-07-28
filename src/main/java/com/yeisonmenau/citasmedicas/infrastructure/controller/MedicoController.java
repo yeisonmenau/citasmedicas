@@ -8,7 +8,8 @@ import com.yeisonmenau.citasmedicas.domain.model.Medico;
 import com.yeisonmenau.citasmedicas.infrastructure.dto.request.MedicoRequestDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.dto.response.MedicoResponseDTO;
 import com.yeisonmenau.citasmedicas.infrastructure.mapper.MedicoMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yeisonmenau.citasmedicas.infrastructure.mapper.MedicoMapperPersonalizado;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/medicos")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS})
+@RequiredArgsConstructor
 public class MedicoController {
 
     private final MedicoMapper mapper;
@@ -26,41 +28,28 @@ public class MedicoController {
     private final GuardarMedicoUseCase guardarMedicoUseCase;
     private final BuscarMedicoPorIdUseCase buscarMedicoPorIdUseCase;
     private final EliminarMedicoUseCase eliminarMedicoUseCase;
-
-    @Autowired
-    public MedicoController(MedicoMapper mapper,
-                            BuscarMedicosUseCase buscarMedicosUseCase,
-                            GuardarMedicoUseCase guardarMedicoUseCase,
-                            BuscarMedicoPorIdUseCase buscarMedicoPorIdUseCase,
-                            EliminarMedicoUseCase eliminarMedicoUseCase) {
-        this.mapper = mapper;
-        this.buscarMedicosUseCase = buscarMedicosUseCase;
-        this.guardarMedicoUseCase = guardarMedicoUseCase;
-        this.buscarMedicoPorIdUseCase = buscarMedicoPorIdUseCase;
-        this.eliminarMedicoUseCase = eliminarMedicoUseCase;
-    }
+    private final MedicoMapperPersonalizado medicoMapperPersonalizado;
 
     @PostMapping
     public ResponseEntity<MedicoResponseDTO> crearMedico(@RequestBody MedicoRequestDTO medicoRequestDTO) {
         Medico medicoDominio = mapper.dtoADominio(medicoRequestDTO);
         Medico medicoGuardado = guardarMedicoUseCase.guardarMedico(medicoDominio);
-        MedicoResponseDTO medicoRespuesta = mapper.dominioADTO(medicoGuardado);
+        MedicoResponseDTO medicoRespuesta = medicoMapperPersonalizado.dominioADTO(medicoGuardado);
         return ResponseEntity.status(HttpStatus.CREATED).body(medicoRespuesta);
     }
 
     @GetMapping
     public ResponseEntity<List<MedicoResponseDTO>> obtenerMedicos() {
         List<Medico> medicos = buscarMedicosUseCase.buscarMedicos();
-        List<MedicoResponseDTO> medicosRespuesta = mapper.dominioADTOs(medicos);
+        List<MedicoResponseDTO> medicosRespuesta = medicos.stream().map(medicoMapperPersonalizado::dominioADTO).toList();
         return ResponseEntity.ok(medicosRespuesta);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MedicoResponseDTO> obtenerMedicoPorId(@PathVariable("id") Long medicoId) {
         Optional<Medico> medicoEncontrado = buscarMedicoPorIdUseCase.buscarMedicoPorId(medicoId);
-        return medicoEncontrado
-                .map(medico -> ResponseEntity.ok(mapper.dominioADTO(medico)))
-                .orElse(ResponseEntity.notFound().build());
+        MedicoResponseDTO respuesta = medicoMapperPersonalizado.dominioADTO(medicoEncontrado.orElse(null));
+        return ResponseEntity.ok(respuesta);
     }
 
     @PutMapping("/{id}")
@@ -72,14 +61,14 @@ public class MedicoController {
             return ResponseEntity.notFound().build();
         }
 
-        // Crear nuevo medico con el ID existente
+        // Crear nuevo médico con el ID existente
         Medico medicoActualizado = new Medico(medicoId,
                 medicoRequestDTO.getMedicoNombre(),
                 medicoRequestDTO.getMedicoEspecialidad(),
                 medicoRequestDTO.getMedicoFechaNacimiento());
 
         Medico medicoGuardado = guardarMedicoUseCase.guardarMedico(medicoActualizado);
-        MedicoResponseDTO medicoRespuesta = mapper.dominioADTO(medicoGuardado);
+        MedicoResponseDTO medicoRespuesta = medicoMapperPersonalizado.dominioADTO(medicoGuardado);
         return ResponseEntity.ok(medicoRespuesta);
     }
 
